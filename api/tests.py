@@ -17,9 +17,14 @@ class RegisterTest(APITestCase):
     def test_register_user(self):
         response = self.register_user()
         self.assertEqual(response.data, {"username": "testuser",
-                                         "email": "test@email.com",
-                                         "password": "testpass"})
+                                         "email": "test@email.com"})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_token(self):
+        self.register_user()
+        data = {"username": "testuser", "password": "testpass"}
+        response = self.client.post('/api-token-auth/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_duplicate_user(self):
         """
