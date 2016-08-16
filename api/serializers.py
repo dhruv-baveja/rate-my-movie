@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
+from .models import Movie
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,3 +19,11 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(data['password'])
         user.save()
         return user
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ('title', 'description')
+
+
