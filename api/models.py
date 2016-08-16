@@ -9,3 +9,17 @@ class Movie(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
+
+
+class Rating(models.Model):
+    RATING_CHOICES = (
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    )
+    movie = models.ForeignKey(Movie)
+    user = models.ForeignKey(User)
+    rating = models.IntegerField(choices=RATING_CHOICES)
+    pub_date = models.DateTimeField(auto_now_add=True)
