@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.test import APITestCase, force_authenticate
+from rest_framework.test import APITestCase
 
 
 class RegisterTest(APITestCase):
@@ -58,7 +58,21 @@ class MovieTest(APITestCase):
         data = {"title": "movie title", "description": "this is description"}
         response = self.client.post(url, data, format='json',
                                     HTTP_AUTHORIZATION='Token {}'.format(token))
-        print response
         self.assertEqual(response.data, {"title": "movie title",
                                          "description": "this is description"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        return response
+
+    def test_add_rating(self):
+        """
+        add rating to a movie.
+        """
+        self.test_add_movie()
+        user = User.objects.get(username='testuser')
+        token = Token.objects.get(user=user)
+        url = reverse('ratings')
+        data = {"movie": 1, "rating": 4}
+        response = self.client.post(url, data, format='json',
+                                    HTTP_AUTHORIZATION='Token {}'.format(token))
+        self.assertEqual(response.data, {"movie": 1, "rating": 4})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
