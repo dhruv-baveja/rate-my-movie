@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .models import Movie
+from .models import Movie, Rating
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -11,12 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
-    def create(self, data):
+    def create(self, validated_data):
         user = User.objects.create(
-            username=data['username'],
-            email=data['email']
+            username=validated_data['username'],
+            email=validated_data['email']
         )
-        user.set_password(data['password'])
+        user.set_password(validated_data['password'])
         user.save()
         return user
 
@@ -27,3 +27,7 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ('title', 'description')
 
 
+class RatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ('movie', 'rating')
