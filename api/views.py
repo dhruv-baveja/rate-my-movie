@@ -5,7 +5,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import UserSerializer, MovieSerializer, RatingSerializer
-from .models import Movie, Rating
+from .permissions import IsNotOwner
 
 
 class Register(APIView):
@@ -30,11 +30,7 @@ class MovieList(APIView):
     def post(self, request, format=None):
         serializer = MovieSerializer(data=request.data)
         if serializer.is_valid():
-            data = serializer.data
-            owner = request.user
-            movie = Movie(user=owner, title=data['title'],
-                          description=data['description'])
-            movie.save()
+            serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -44,16 +40,11 @@ class RatingList(APIView):
     Add rating for a movie
     """
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsNotOwner,)
 
     def post(self, request, format=None):
         serializer = RatingSerializer(data=request.data)
         if serializer.is_valid():
-            try:
-                movie = Movie.objects.get(pk=serializer.data["movie"])
-            except Movie.DoesNotExist:
-                return Response({"detail": "Movie does not exist."})
-            data = serializer.data
-            Rating(movie=movie, user=request.user, rating=data['rating']).save()
+            serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
