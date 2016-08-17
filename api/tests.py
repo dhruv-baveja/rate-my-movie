@@ -80,7 +80,7 @@ class MovieTest(APITestCase):
         user = User.objects.get(username='testuser')
         token = Token.objects.get(user=user)
 
-        # Test permission denied for user who has added the movie
+        # Test for denying movie creator to rate a movie
         url = reverse('ratings')
         data = {"movie": 1, "rating": 4}
         response = self.client.post(url, data, format='json',
