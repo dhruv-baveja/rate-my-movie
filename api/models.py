@@ -10,6 +10,10 @@ class Movie(models.Model):
     description = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def avg_rating(self):
+        return Rating.objects.filter(movie__id=self.id).aggregate(models.Avg('stars'))
+
 
 class Rating(models.Model):
     RATING_CHOICES = (
@@ -21,5 +25,6 @@ class Rating(models.Model):
     )
     movie = models.ForeignKey(Movie)
     user = models.ForeignKey(User)
-    rating = models.IntegerField(choices=RATING_CHOICES)
+    stars = models.IntegerField(choices=RATING_CHOICES)
     pub_date = models.DateTimeField(auto_now_add=True)
+
