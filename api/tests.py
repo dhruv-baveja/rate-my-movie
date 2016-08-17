@@ -82,7 +82,7 @@ class MovieTest(APITestCase):
 
         # Test for denying movie creator to rate a movie
         url = reverse('ratings')
-        data = {"movie": 1, "rating": 4}
+        data = {"movie": 1, "stars": 4}
         response = self.client.post(url, data, format='json',
                                     HTTP_AUTHORIZATION='Token {}'.format(token))
         self.assertEqual(response.data, {'detail': 'You do not have permission to perform this action.'})
@@ -90,7 +90,7 @@ class MovieTest(APITestCase):
 
         # Test not found error when user tries to rate a non existing movie
         self.register_another_user()
-        data = {"movie": 2, "rating": 4}
+        data = {"movie": 2, "stars": 4}
         user = User.objects.get(username='anothertestuser')
         token = Token.objects.get(user=user)
         response = self.client.post(url, data, format='json',
@@ -99,10 +99,10 @@ class MovieTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
         # Test whether the user can rate a movie
-        data = {"movie": 1, "rating": 4}
+        data = {"movie": 1, "stars": 4}
         response = self.client.post(url, data, format='json',
                                     HTTP_AUTHORIZATION='Token {}'.format(token))
-        self.assertEqual(response.data, {"movie": 1, "rating": 4})
+        self.assertEqual(response.data, {"movie": 1, "stars": 4})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Test permission denied  when user attempts to rate a movie twice
