@@ -10,10 +10,6 @@ class Movie(models.Model):
     description = models.TextField()
     datetime = models.DateTimeField(auto_now_add=True)
 
-    @property
-    def avg_rating(self):
-        return Rating.objects.filter(movie__id=self.id).aggregate(models.Avg('stars'))
-
 
 class Rating(models.Model):
     RATING_CHOICES = (
