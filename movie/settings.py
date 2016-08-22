@@ -27,11 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-EMAIL_USE_TLS = ('586',)
-EMAIL_HOST = ('smtp.gmail.com',)
-EMAIL_PORT = ('587',)
-EMAIL_HOST_USER = ('username@gmail.com',)
-EMAIL_HOST_PASSWORD = ('password',)
+EMAIL_USE_TLS = '586'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'user@email.com'
+EMAIL_HOST_PASSWORD = 'password'
 
 # CELERY
 BROKER_URL = 'redis://localhost:6379'
