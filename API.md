@@ -24,10 +24,32 @@ _json_:
 }
 ```
 
+### POST /api-auth-token/
+
+#### Request
+
+```
+{
+    "username": "testuser",
+    "password": "testpass"
+}
+```
+
+#### Response
+
+_status_: 200
+_json_:
+```
+{
+    "token": "2er89tertweeqt5qtzgdsd98adsfdsgw4t2uqajdj754d",
+}
+```
+
 ### POST /api/movies/
 
 #### Request
 
+_Authorisation_: Token 2er89tertweeqt5qtzgdsd98adsfdsgw4t2uqajdj754d
 ```
 {
     "title": "movie title",
@@ -50,6 +72,7 @@ _json_:
 
 #### Request
 
+_Authorisation_: Token 2er89tertweeqt5qtzgdsd98adsfdsgw4t2uqajdj754d
 ```
 {
     "movie": 1,
