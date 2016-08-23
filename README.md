@@ -1,4 +1,4 @@
-# Remind me later
+# Rate my movie
 
 An app where people can add movies and other people can rate them.User can add a movie and other people, except the creator, can rate it. And remember a user can only rate a movie once. Sends the average rating of each movie to all of the creators, at midnight daily.
 
